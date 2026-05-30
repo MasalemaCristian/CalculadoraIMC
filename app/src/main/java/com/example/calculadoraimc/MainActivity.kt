@@ -12,6 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+
 
 
 class MainActivity : ComponentActivity() {
@@ -37,6 +40,7 @@ fun PantallaInicio() {
     var nombre by remember { mutableStateOf("") }
     var peso by remember { mutableStateOf("") }
     var altura by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -66,7 +70,36 @@ fun PantallaInicio() {
             label = { Text("Altura") }
         )
 
-        Button(onClick = {}) {
+        Button(
+            onClick = {
+
+                val pesoNumero = peso.toFloatOrNull()
+                val alturaNumero = altura.toFloatOrNull()
+
+                if (
+                    pesoNumero == null ||
+                    alturaNumero == null ||
+                    pesoNumero <= 0 ||
+                    alturaNumero <= 0
+                ) {
+                    error = true
+                } else {
+
+                    error = false
+
+                    val imc =
+                        pesoNumero / (alturaNumero * alturaNumero)
+
+                    val nombreCodificado =
+                        URLEncoder.encode(
+                            nombre,
+                            StandardCharsets.UTF_8.toString()
+                        )
+
+
+                }
+            }
+        ) {
             Text("Calcular")
         }
     }
